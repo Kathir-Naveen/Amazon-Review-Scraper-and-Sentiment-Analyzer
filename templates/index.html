@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Review Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>Amazon Review Analyzer</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+                    <li><a href="javascript:void(0);" id="about-link">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="home-page">
+            <div class="hero">
+                <h2>Analyze Amazon Product Reviews</h2>
+                <p>Enter an Amazon product URL to scrape reviews and analyze sentiment</p>
+                
+                <div class="url-form">
+                    <input type="text" id="amazon-url" placeholder="Enter Amazon product URL...">
+                    <button id="analyze-button">
+                        <i class="fas fa-search"></i> Analyze
+                    </button>
+                </div>
+                
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Connecting to Amazon...</p>
+                </div>
+                
+                <div id="error-message" class="hidden"></div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-spider"></i>
+                    <h3>Web Scraping</h3>
+                    <p>Extract all reviews from multiple pages</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Sentiment Analysis</h3>
+                    <p>Powered by VADER sentiment analysis</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-smile"></i>
+                    <h3>Emoji Meter</h3>
+                    <p>Visual representation of review sentiment</p>
+                </div>
+            </div>
+        </main>
+        
+        <div id="about-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>About Amazon Review Analyzer</h2>
+                <p>This application allows you to analyze sentiment in Amazon product reviews.</p>
+                <p>Simply enter an Amazon product URL, and the application will:</p>
+                <ul>
+                    <li>Scrape all available reviews from the product page</li>
+                    <li>Extract product details and image</li>
+                    <li>Analyze the sentiment of reviews using VADER</li>
+                    <li>Display results using an emoji-based sentiment meter</li>
+                    <li>Generate a word cloud of most frequent terms</li>
+                </ul>
+                <p>Created as a final year project in 2025.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Amazon Review Analyzer | <a href="javascript:void(0);" id="privacy-link">Privacy Policy</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

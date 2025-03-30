@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis | Amazon Review Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-chart-pie"></i>
+                <h1>Amazon Review Analyzer</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('scraping_page') }}">Scraping</a></li>
+                    <li><a href="{{ url_for('analyze') }}" class="active">Analysis</a></li>
+                    <li><a href="{{ url_for('results') }}">Results</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="analysis-page">
+            {% if error %}
+            <div class="error-container">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>{{ error }}</h3>
+                    <p>Please go to the Scraping page to collect review data before analyzing.</p>
+                    <a href="{{ url_for('scraping_page') }}" class="btn primary-btn">
+                        <i class="fas fa-spider"></i> Go to Scraping
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="product-header">
+                <div class="product-image">
+                    <img src="{{ product_details.image_url }}" alt="{{ product_details.title }}">
+                </div>
+                <div class="product-info">
+                    <h2>{{ product_details.title }}</h2>
+                    <p class="product-price">{{ product_details.price }}</p>
+                    <p class="product-rating">
+                        <i class="fas fa-star"></i> {{ product_details.rating }}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="analysis-results">
+                <div class="sentiment-section">
+                    <h3>Sentiment Analysis</h3>
+                    <div class="sentiment-meter-container">
+                        <div id="sentiment-meter"></div>
+                        <div class="sentiment-labels">
+                            <span class="negative">Negative</span>
+                            <span class="neutral">Neutral</span>
+                            <span class="positive">Positive</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sentiment-stats">
+                        {% set total_reviews = total_reviews|default(review_count|default(100)) %}
+                        {% set positive_pct = (sentiment_results.pos * 100)|round|int %}
+                        {% set neutral_pct = (sentiment_results.neu * 100)|round|int %}
+                        {% set negative_pct = (sentiment_results.neg * 100)|round|int %}
+                        
+                        {% set positive_count = ((sentiment_results.pos * total_reviews)|round|int) %}
+                        {% set neutral_count = ((sentiment_results.neu * total_reviews)|round|int) %}
+                        {% set negative_count = ((sentiment_results.neg * total_reviews)|round|int) %}
+                        
+                        <div class="stat-card positive">
+                            <i class="fas fa-smile"></i>
+                            <h4>Positive</h4>
+                            <p>{{ positive_pct }}%</p>
+                        </div>
+                        <div class="stat-card neutral">
+                            <i class="fas fa-meh"></i>
+                            <h4>Neutral</h4>
+                            <p>{{ neutral_pct }}%</p>
+                        </div>
+                        <div class="stat-card negative">
+                            <i class="fas fa-frown"></i>
+                            <h4>Negative</h4>
+                            <p>{{ negative_pct }}%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="word-cloud-section">
+                    <h3>Review Word Cloud</h3>
+                    <div id="word-cloud">
+                        <div id="word-cloud-message" style="display: none; text-align: center; padding: 20px;">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No word cloud data available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('results') }}" class="btn primary-btn">
+                    <i class="fas fa-list"></i> View All Reviews
+                </a>
+                <a href="{{ url_for('index') }}" class="btn secondary-btn">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+            {% endif %}
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Amazon Review Analyzer</p>
+        </footer>
+    </div>
+
+    {% if not error %}
+    <!-- Define variables for JavaScript -->
+    <script>
+        // These variables will be filled by the template engine
+        var sentimentCompound = {{ sentiment_results.compound|default(0)|tojson }};
+        var sentimentPositive = {{ sentiment_results.pos|default(0)|tojson }};
+        var sentimentNeutral = {{ sentiment_results.neu|default(0)|tojson }};
+        var sentimentNegative = {{ sentiment_results.neg|default(0)|tojson }};
+        var wordCloudData = {{ word_cloud_data|default([])|tojson|safe }};
+    </script>
+    
+    <!-- Add D3 Cloud library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <script src="{{ url_for('static', filename='js/sentiment.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if word cloud data exists and is not empty
+            setTimeout(function() {
+                const wordCloudElement = document.getElementById('word-cloud');
+                const messageElement = document.getElementById('word-cloud-message');
+                
+                if (wordCloudElement && wordCloudElement.childNodes.length <= 1 && messageElement) {
+                    messageElement.style.display = 'block';
+                }
+            }, 1000);
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
