@@ -11,13 +11,13 @@ It helps users understand the general sentiment (positive, negative, or neutral)
 - Visualizes sentiment distribution.
 
 ## 🛠 Tech Stack
-- **Programming Language:** Python  
-- **Libraries Used:** BeautifulSoup, Scrapy, Selenium, Pandas, NLTK, TextBlob, Matplotlib  
+- **Programming Language:** Python flask 
+- **Libraries Used:** BeautifulSoup, Selenium, NLTK, VADER. 
 
 ## 📥 Installation Guide
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-repo-name.git
+   git clone https://github.com/Kathir-Naveen/Amazon-Review-Scraper-and-Sentiment-Analyzer-.git
    cd amazon-review-scraper
    ```
 2. Install required dependencies:
@@ -46,22 +46,41 @@ It helps users understand the general sentiment (positive, negative, or neutral)
 
 ## 📂 Project Structure
 ```
-📁 Amazon Review Scraper
-│── 📂 data                    # Contains scraped data files
-│── 📂 scripts                 # Python scripts for scraping and analysis
-│── 📂 results                 # Output of sentiment analysis
-│── scraper.py                 # Amazon review scraper
-│── data_cleaner.py            # Data cleaning module
-│── sentiment_analyzer.py      # Sentiment analysis module
-│── visualize_results.py       # Visualization module
-│── requirements.txt           # Required dependencies
-│── README.md                  # Project documentation
+amazon_review_analyzer/
+│
+├── __pycache__/                   # Compiled Python files
+│   ├── app.cpython-310.pyc
+│   ├── sentiment.cpython-310.pyc
+│   └── amazon_scraper.cpython-310.pyc
+│
+├── analyzers/                      # Sentiment analysis-related code
+│   └── sentiment.py                # Sentiment analysis logic
+│
+├── app.py                          # Main application entry point
+│
+├── requirements.txt                # List of dependencies
+│
+├── scrapers/                       # Web scraping-related code
+│   └── amazon_scraper.py           # Amazon review scraper
+│
+├── static/                         # Static files (CSS, JS)
+│   ├── css/
+│   │   └── styles.css              # Styles for the web app
+│   └── js/
+│       ├── main.js                 # Main JS file for app functionality
+│       └── sentiment.js            # JS for sentiment analysis
+│
+├── templates/                      # HTML templates
+│   ├── analysis.html               # Page for displaying analysis
+│   ├── index.html                  # Home page
+│   ├── results.html                # Page to show results of analysis
+│   └── scraping.html               # Page to show scraping progress/results
+│
+└── README.md                       # Project documentation
+
 ```
 
-## 🔥 Future Enhancements
-- Improve scraping efficiency.
-- Use deep learning models for better sentiment classification.
-- Build a web-based interface for real-time analysis.
+
 
 ## ✨ Contributors
 - **Your Name** (Replace with your details)
